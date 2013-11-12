@@ -1,0 +1,51 @@
+*****************************************************
+* LAGO: Linear Approximation for Graph Optimization *
+*****************************************************
+
+This code implements a fast accurate linear approximation of the maximum likelihood pose graph configuration. 
+LAGO does not require any initial guess for optimization and has a very simple implementation. 
+The code relies on the CSparse library for sparse matrix manipulation. 
+The source code was developed under Linux/Unix with GCC 4.05, but should also work under Windows 
+with slight modifications.
+
+References:
+L. Carlone, R. Aragues, J.A. Castellanos, and B. Bona, 
+“A linear approximation for graph-based simultaneous localization and mapping”, 
+in Proc. of the Int. Conf. Robotics: Science and Systems, 2011.
+
+L. Carlone, R. Aragues, J.A. Castellanos, and B. Bona, 
+“A first-order solution to simultaneous localization and mapping with graphical models”, 
+in Proc. of the Int. Conf. on Robotics and Automation, pp. 1764-1771, ISBN: 9781612843865, 2011.
+
+
+**********************
+* Notes and Warnings *
+**********************
+This library is a research-level software which is still in development.
+
+****************
+* Installation *
+****************
+1. Download and install CSparse
+2. Download our source code
+3. Modify the Makefile, specifying the path to your Csparse folder
+4. make
+
+Run the code with the following syntax (Linux):     
+./lago   input_file_name [d]   (adding the optional argument “d” will   
+    run the code in debug mode, which will output additional files with intermediate results)
+The resulting pose graph estimate is written on the file “output_graph.txt” 
+(the file is created in the same folder of the executable)
+
+The current implementation of LAGO uses the same input file format of TORO.
+LAGO requires that the nodes' indices start from zero and increase along robot trajectory 
+(i.e., they follow a chronological order). Since LAGO requires no initial guess, the list 
+of vertices in the input file is only kept for  compatibility with other approaches. 
+For simplicity, also the edges are assumed in a specific order: odometric edges, 
+followed by loop closing edges. Therefore, in a graph with n+1 nodes, the first n edges 
+connect nodes with consecutive indices. 
+
+The format of the output file is similar to the one of the input file: a list of vertices, 
+followed by a list of edges. The edges are exactly the same as the input file. 
+The lines starting with “VERTEX2”, instead, contain the poses estimated by LAGO 
+(while the corresponding lines in the input file contain the initial guess for that poses).
